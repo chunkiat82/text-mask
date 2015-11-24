@@ -1,0 +1,33 @@
+{
+    "name": "text-mask",
+    "version": "0.0.1",
+    "description": "To provide a utility container to deal with mask text and input",
+    "main": "lib/index.js",
+    "scripts": {       
+        "build": "babel ./modules -d lib",
+        "test": "npm run lint",
+        "lint": " eslint --ignore-path .gitignore modules/* examples/*",
+        "compile": "babel -d lib/ modules/",
+        "prepublish": "npm run compile"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/chunkiat82/text-mask.git"
+    },
+    "keywords": [
+        "mask",
+        "input",
+        "text"
+    ],
+    "author": "Raymond Ho",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/chunkiat82/text-mask/issues"
+    },
+    "homepage": "https://github.com/chunkiat82/text-mask",
+    "devDependencies": {
+        "babel-core": "^5.8.25",
+        "babel-runtime": "^5.8.24",
+        "eslint": "^1.9.0"
+    }
+}

@@ -1,4 +1,5 @@
 # text-mask
+![image](https://travis-ci.org/chunkiat82/text-mask.svg)
 
 ### Demo
 * TBC

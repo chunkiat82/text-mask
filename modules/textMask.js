@@ -1,4 +1,4 @@
-export default function mask(options = { pattern: '', placeholder:'', patternChar:'_'}) {
+export default function mask(options = { pattern: '', placeholder: '', patternChar: '_' }) {
 
     const { pattern, placeholder, patternChar } = options;
 
@@ -13,19 +13,19 @@ export default function mask(options = { pattern: '', placeholder:'', patternCha
 
     const patternCharSelected = patternChar;
 
-    //pattern and placeholder should have the same length
+    // pattern and placeholder should have the same length
     const placeholderSelected = generatePlaceholderText(placeholder, patternSelected, patternCharSelected);
 
     let text = '';
     let inputText = '';
 
     // pending a full check for pattern vs placeholder
-    function generatePlaceholderText(_placeholder = '', _pattern, _patternChar = '_'){
+    function generatePlaceholderText(_placeholder = '', _pattern, _patternChar = '_') {
         let newPlaceholder = _placeholder;
 
-        if (_pattern.length !== _placeholder.length){
+        if (_pattern.length !== _placeholder.length) {
             newPlaceholder = String(_pattern)
-                .replace(/[9|a|\*]/g,_patternChar);            
+                .replace(/[9|a|\*]/g, _patternChar);
         }
         return newPlaceholder;
     }
@@ -34,16 +34,16 @@ export default function mask(options = { pattern: '', placeholder:'', patternCha
 
         if (text.length === patternSelected.length) return false;
 
-        //check for pattern character        
+        // check for pattern character
         const curPatternChar = patternSelected[text.length];
         const curPaceholderChar = placeholderSelected[text.length];
 
-        //need a better check here
+        // need a better check here
         if (curPatternChar === curPaceholderChar) {
             text = text + curPatternChar;
             return put(inputChar);
-        }else{
-            switch (curPatternChar){
+        } else {
+            switch (curPatternChar) {
                 case '9':
                     if (!inputChar.match(NUMERIC_REGEX)) return false;
                     break;
@@ -56,11 +56,12 @@ export default function mask(options = { pattern: '', placeholder:'', patternCha
                 default:
                     return false;
             }
+
             text = text + inputChar;
             inputText = inputText + inputChar;
-        }
 
-        return true;
+            return true;
+        }
     }
 
     function back() {
@@ -112,6 +113,6 @@ export default function mask(options = { pattern: '', placeholder:'', patternCha
         getInputText: getInputText,
         getDisplayText: getDisplayText,
         getSelection: getSelection,
-        back: back
+        back: back,
     };
 }

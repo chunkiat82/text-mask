@@ -1,23 +1,23 @@
 import textMask from '../modules/textMask';
 
-const maskObj = textMask({ pattern: '99/99/99', placeholder:'DD/MM/YY', patternChar:'_'});
+let cnpjMask = textMask({
+    pattern: '99.999.999/9999-99',
+    patternChar: '_',
+});
 
-maskObj.put('A');
-maskObj.put('1');
-maskObj.put('1');
+'74152024000100'.split('').forEach(function x(i) {
+    cnpjMask.put(i);
+});
 
-maskObj.put('0');
-maskObj.put('3');
+console.log(cnpjMask.getDisplayText());
 
-maskObj.put('A');
-maskObj.put('A');
-maskObj.put('A');
-maskObj.put('8');
-maskObj.put('2');
+cnpjMask = textMask({
+    pattern: '99.999.999/9999-99',
+});
 
-maskObj.back();
-maskObj.back();
-maskObj.back();
+'7415202'.split('').forEach(function x(i) {
+    cnpjMask.put(i);
+});
 
-console.log(maskObj.getText());
-console.log(maskObj.getDisplayText());
+console.log(cnpjMask.getInputText());
+console.log(cnpjMask.getDisplayText());

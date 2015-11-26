@@ -26,10 +26,10 @@
     "url": "https://github.com/chunkiat82/text-mask/issues"
   },
   "homepage": "https://github.com/chunkiat82/text-mask",
-  "devDependencies": {    
+  "devDependencies": {
     "babel-core": "^5.8.25",
     "babel-runtime": "^5.8.24",
-    "eslint": "^1.9.0",
+    "eslint": "^1.10.1",
     "eslint-config-airbnb": "^1.0.0",
     "eslint-plugin-react": "^3.10.0",
     "mocha": "^2.3.4",

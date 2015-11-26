@@ -4,3 +4,4 @@ node_js:
 install:
   - npm i -g babel@5.8.34
   - npm i -g mocha@2.3.4
+  - npm install

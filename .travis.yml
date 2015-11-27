@@ -1,6 +1,7 @@
 language: node_js
 node_js:
   - "0.10"
+sudo: required
 install:
   - npm i -g babel-cli
   - npm i -g babel@5.8.34

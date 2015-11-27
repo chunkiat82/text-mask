@@ -38,11 +38,8 @@ describe('Numberic Inputs', function() {
             assert.equal('11/03/1982', maskedText.getDisplayText());
             assert.equal('11031982', maskedText.getInputText());
             // delete 5 times
-            maskedText.back();
-            maskedText.back();
-            maskedText.back();
-            maskedText.back();
-            maskedText.back();
+            maskedText.back().back().back().back().back();
+
             assert.equal('11/0M/YYYY', maskedText.getDisplayText());
             assert.equal('110', maskedText.getInputText());
         });

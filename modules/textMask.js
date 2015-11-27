@@ -60,7 +60,7 @@ export default function mask(options = { pattern: '', placeholder: '', patternCh
             text = text + inputChar;
             inputText = inputText + inputChar;
 
-            return true;
+            return this;
         }
     }
 
@@ -80,7 +80,7 @@ export default function mask(options = { pattern: '', placeholder: '', patternCh
             }
         }
 
-        return true;
+        return this;
     }
 
     function getInputText() {

@@ -1,6 +1,6 @@
 {
   "name": "text-mask",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "To provide a utility container to deal with mask text and input",
   "main": "lib/index.js",
   "scripts": {

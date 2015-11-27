@@ -5,19 +5,19 @@ let cnpjMask = textMask({
     patternChar: '_',
 });
 
-'74152024000100'.split('').forEach(function x(i) {
-    cnpjMask.put(i);
-});
 
-console.log(cnpjMask.getDisplayText());
+function* cnpjMasker(){
+  	const text = '74152024000100'
+  	let i = 0;
+  	while (i < text.length){
+  		yield cnpjMask.put(text[i++]);
+	}
+}
 
-cnpjMask = textMask({
-    pattern: '99.999.999/9999-99',
-});
+const cnpjText = cnpjMasker();
+let loopValue = cnpjText.next().value;
 
-'7415202'.split('').forEach(function x(i) {
-    cnpjMask.put(i);
-});
-
-console.log(cnpjMask.getInputText());
-console.log(cnpjMask.getDisplayText());
+while (loopValue){
+	console.log(loopValue.getDisplayText());
+	loopValue = cnpjText.next().value;
+}

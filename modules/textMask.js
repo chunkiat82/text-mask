@@ -18,6 +18,8 @@ export default function mask(options = { pattern: '', placeholder: '', patternCh
 
     let text = '';
     let inputText = '';
+    let start = 0;
+    let end = 0;
 
     // pending a full check for pattern vs placeholder
     function generatePlaceholderText(_placeholder = '', _pattern, _patternChar = '_') {
@@ -34,13 +36,19 @@ export default function mask(options = { pattern: '', placeholder: '', patternCh
 
         if (text.length === patternSelected.length) return false;
 
+        if (end === patternSelected.length) return false;
+
         // check for pattern character
-        const curPatternChar = patternSelected[text.length];
-        const curPaceholderChar = placeholderSelected[text.length];
+        const curPatternChar = patternSelected[end];
+        const curPaceholderChar = placeholderSelected[end];
+
+        console.log(curPatternChar);
+        console.log(curPaceholderChar);
 
         // need a better check here
         if (curPatternChar === curPaceholderChar) {
             text = text + curPatternChar;
+            end = end + 1;
             return put(inputChar);
         } else {
             switch (curPatternChar) {
@@ -59,6 +67,7 @@ export default function mask(options = { pattern: '', placeholder: '', patternCh
 
             text = text + inputChar;
             inputText = inputText + inputChar;
+            end = end + 1;
 
             return this;
         }
@@ -66,7 +75,7 @@ export default function mask(options = { pattern: '', placeholder: '', patternCh
 
     function back() {
 
-        if (text.length === 0) return false;
+        if (text.length === 0 || end === 0) return false;
 
         text = text.substring(0, text.length - 1);
         inputText = inputText.substring(0, inputText.length - 1);
@@ -77,7 +86,9 @@ export default function mask(options = { pattern: '', placeholder: '', patternCh
 
             if (curPatternChar === curPaceholderChar) {
                 text = text.substring(0, text.length - 1);
+                end -= 1;
             }
+            end -= 1;
         }
 
         return this;
@@ -99,10 +110,16 @@ export default function mask(options = { pattern: '', placeholder: '', patternCh
     }
 
     function getSelection() {
-        const start = text.length ? text.length - 1 : 0;
-        const end = text.length;
+        start = end - 1;
 
         return { start, end };
+    }
+
+    function setSelection(index) {
+        console.log(index);
+        const start = index;
+        const end = index+1;
+        return { index, end };
     }
 
     return {
@@ -113,6 +130,7 @@ export default function mask(options = { pattern: '', placeholder: '', patternCh
         getInputText: getInputText,
         getDisplayText: getDisplayText,
         getSelection: getSelection,
+        setSelection: setSelection,
         back: back,
     };
 }

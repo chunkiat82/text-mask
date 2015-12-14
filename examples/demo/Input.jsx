@@ -1,16 +1,14 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import { setSelection } from 'react/lib/ReactInputSelection';
+import { setSelection, getSelection } from 'react/lib/ReactInputSelection';
 import textMask from '../../modules';
 
 class TextInput extends React.Component {
 
     constructor(){
         super();
-        this.state = {          
-            placeholder: 'MM/DD/YYYY'
-        };
+        this.state = {};
         this.onKeyDown = this.onKeyDown.bind(this);
         this.onKeyPress = this.onKeyPress.bind(this);
         this.onKeyonPasteDown = this.onPaste.bind(this);
@@ -20,6 +18,8 @@ class TextInput extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.focusTextBox = this.focusTextBox.bind(this);
         this.clearAndFocusInput = this.clearAndFocusInput.bind(this);
+        this.handleClick = this.handleClick.bind(this);
+        this.onPaste = this.onPaste.bind(this);
 
     }
 
@@ -44,7 +44,7 @@ class TextInput extends React.Component {
     }
 
     onKeyPress(e) {
-        if (!this.mask) return;
+        if (this.mask === undefined) return;
 
         if (e.metaKey || e.altKey || e.ctrlKey) return;
 
@@ -58,7 +58,7 @@ class TextInput extends React.Component {
     }
 
     onPaste(e) {
-        if (!this.mask) return;
+        if (this.mask === undefined)return;
 
         e.preventDefault();
 
@@ -77,30 +77,25 @@ class TextInput extends React.Component {
         setSelection(this._input, this.mask.getSelection());
     }
 
+    handleClick(){
+        if (this.mask){
+            const startEnd = this.mask.getSelection();
+            this.mask.setSelection(getSelection(this._input));
+        }
+    }
 
     handleFocus() {
+
         this.setState({
             focused: true,
             floatLabel: true
         });
-
-        // wait until the label floating up animation is done before we show the placeholder
-        setTimeout(() => {
-            if (this.state.floatLabel && !!this.props.label) {
-                this.setState({
-                    placeholder: this.props.helpText
-                });
-            }
-        }, 375);
 
         if (this.props.handleFocus) {
             this.props.handleFocus(event);
         }
     }
 
-    /**
-     * Don't float the label on blur, but keep it floated if there's an input value
-     */
     handleBlur(event) {
         const value = this.mask ? this.mask.getInputText() : event.target.value;
 
@@ -129,9 +124,6 @@ class TextInput extends React.Component {
         }
     }
 
-    /**
-     * Clear the input and focus after clearing the value in the state
-     */
     clearAndFocusInput() {
         this.setState({
             value: ''
@@ -143,36 +135,26 @@ class TextInput extends React.Component {
     }
 
     render() {
-
-        const shouldHandle = (handler) => {
-            return handler;            
-        };
-
         return (
             <div>
                  <input ref={(c) => this._input = c}
-                        type={this.props.type}
                         name={this.props.name}
                         id={this.props.id}
-                        placeholder={this.state.placeholder}
+                        placeholder={this.props.maskPlaceholder}
                         value={this.mask && this.mask.getInputText().length > 0 ? this.mask.getDisplayText() : this.state.value}
-
-                        autoComplete={this.props.autocomplete}
-                        dir={this.props.dir}
 
                         pattern={this.props.pattern}
                         readOnly={false}
 
-
-                        onMouseOver={shouldHandle(this.handleMouseOver)}
-                        onMouseOut={shouldHandle(this.handleMouseOut)}
-                        onFocus={shouldHandle(this.handleFocus)}
-                        onBlur={shouldHandle(this.handleBlur)}
-                        onChange={shouldHandle(this.handleChange)}
-
-                        onKeyDown={shouldHandle(this.onKeyDown)}
-                        onKeyPress={shouldHandle(this.onKeyPress)}
-                        onPaste={shouldHandle(this.onPaste)}
+                        onMouseOver={this.handleMouseOver}
+                        onMouseOut={this.handleMouseOut}
+                        onFocus={this.handleFocus}
+                        onBlur={this.handleBlur}
+                        onChange={this.handleChange}
+                        onClick={this.handleClick}
+                        onKeyDown={this.onKeyDown}
+                        onKeyPress={this.onKeyPress}
+                        onPaste={this.onPaste}
                 />
             </div>
         );

@@ -28,3 +28,4 @@ node_modules
 
 #generated folder
 lib
+.DS_Store

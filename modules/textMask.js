@@ -116,10 +116,9 @@ export default function mask(options = { pattern: '', placeholder: '', patternCh
     }
 
     function setSelection(index) {
-        console.log(index);
-        const start = index;
-        const end = index+1;
-        return { index, end };
+        const startIndex = index;
+        const endIndx = index + 1;
+        return { startIndex, endIndx };
     }
 
     return {

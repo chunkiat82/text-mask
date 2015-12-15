@@ -79,8 +79,8 @@ class TextInput extends React.Component {
 
     handleClick(){
         if (this.mask){
-            const startEnd = this.mask.getSelection();
-            this.mask.setSelection(getSelection(this._input));
+            // console.log(getSelection(this._input));
+            this.mask.setSelection(getSelection(this._input).start);
         }
     }
 

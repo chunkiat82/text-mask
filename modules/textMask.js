@@ -1,3 +1,8 @@
+String.prototype.replaceAt=function(index, character) {
+    return this.substr(0, index) + character + this.substr(index+character.length);
+}
+
+
 export default function mask(options = { pattern: '', placeholder: '', patternChar: '_' }) {
 
     const { pattern, placeholder, patternChar } = options;
@@ -34,20 +39,27 @@ export default function mask(options = { pattern: '', placeholder: '', patternCh
 
     function put(inputChar) {
 
+        console.log('PUT end='+end);
+
         if (text.length === patternSelected.length) return false;
 
         if (end === patternSelected.length) return false;
 
-        // check for pattern character
+        // // check for pattern character
         const curPatternChar = patternSelected[end];
         const curPaceholderChar = placeholderSelected[end];
 
-        console.log(curPatternChar);
-        console.log(curPaceholderChar);
+        // console.log(curPatternChar);
+        // console.log(curPaceholderChar);
 
         // need a better check here
         if (curPatternChar === curPaceholderChar) {
-            text = text + curPatternChar;
+            if (end >= text.length){
+                text = text + curPatternChar;    
+            }else{
+                text = text.replaceAt(end, curPatternChar);
+            }
+            
             end = end + 1;
             return put(inputChar);
         } else {
@@ -65,8 +77,14 @@ export default function mask(options = { pattern: '', placeholder: '', patternCh
                     return false;
             }
 
-            text = text + inputChar;
+            if (end >= text.length){
+                text = text + curPatternChar;    
+            }else{
+                text = text.replaceAt(end, curPatternChar);      
+            }
+            
             inputText = inputText + inputChar;
+
             end = end + 1;
 
             return this;
@@ -74,6 +92,8 @@ export default function mask(options = { pattern: '', placeholder: '', patternCh
     }
 
     function back() {
+
+        console.log('BACK end='+end);
 
         if (text.length === 0 || end === 0) return false;
 
@@ -116,9 +136,11 @@ export default function mask(options = { pattern: '', placeholder: '', patternCh
     }
 
     function setSelection(index) {
-        const startIndex = index;
-        const endIndx = index + 1;
-        return { startIndex, endIndx };
+        if (index > 0){
+            end = index;
+        }else{
+            end =0
+        }
     }
 
     return {

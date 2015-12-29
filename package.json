@@ -40,6 +40,7 @@
     "mocha": "^2.3.4",
     "mocha-babel": "^3.0.0",
     "react": "^0.14.3",
-    "react-dom": "^0.14.3"
+    "react-dom": "^0.14.3",
+    "webpack-dev-server": "^1.14.0"
   }
 }

@@ -1,12 +1,11 @@
 import React from 'react';
-import classNames from 'classnames';
 
 import { setSelection, getSelection } from 'react/lib/ReactInputSelection';
 import textMask from '../../modules';
 
 class TextInput extends React.Component {
 
-    constructor(){
+    constructor() {
         super();
         this.state = {};
         this.onKeyDown = this.onKeyDown.bind(this);
@@ -20,11 +19,11 @@ class TextInput extends React.Component {
         this.clearAndFocusInput = this.clearAndFocusInput.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.onPaste = this.onPaste.bind(this);
-
+        this.updateMaskSelection = this.updateMaskSelection.bind(this);
     }
 
     componentWillMount() {
-        if (this.props.maskPattern) {        
+        if (this.props.maskPattern) {
             this.mask = textMask({ pattern: this.props.maskPattern, placeholder: this.props.maskPlaceholder });
         }
     }
@@ -32,11 +31,12 @@ class TextInput extends React.Component {
     onKeyDown(e) {
         if (!this.mask) return;
 
+        this.updateMaskSelection();
+
         if (e.key === 'Backspace') {
             e.preventDefault();
             if (this.mask.back()) {
-                const value = this.mask.getDisplayText();
-                e.target.value = value;
+                e.target.value = this.mask.getInputText();
                 this.updateInputSelection();
                 this.handleChange(e);
             }
@@ -49,16 +49,18 @@ class TextInput extends React.Component {
         if (e.metaKey || e.altKey || e.ctrlKey) return;
 
         e.preventDefault();
+
+        this.updateMaskSelection();
+
         if (this.mask.put(e.key)) {
-            console.log('here');
-            e.target.value = this.mask.getDisplayText();
+            e.target.value = this.mask.getInputText();
             this.updateInputSelection();
             this.handleChange(e);
         }
     }
 
     onPaste(e) {
-        if (this.mask === undefined)return;
+        if (this.mask === undefined) return;
 
         e.preventDefault();
 
@@ -68,7 +70,7 @@ class TextInput extends React.Component {
             this.mask.put(char);
         });
 
-        e.target.value = this.mask.getDisplayText();
+        e.target.value = this.mask.getInputText();
         setTimeout(this.updateInputSelection, 0);
         this.handleChange(e);
     }
@@ -77,10 +79,12 @@ class TextInput extends React.Component {
         setSelection(this._input, this.mask.getSelection());
     }
 
-    handleClick(){
-        if (this.mask){
-            // console.log(getSelection(this._input));
-            this.mask.setSelection(getSelection(this._input).start);
+    handleClick() {
+    }
+
+    updateMaskSelection() {
+        if (this.mask) {
+            this.mask.setSelection(getSelection(this._input).start, getSelection(this._input).end);
         }
     }
 
@@ -88,7 +92,7 @@ class TextInput extends React.Component {
 
         this.setState({
             focused: true,
-            floatLabel: true
+            floatLabel: true,
         });
 
         if (this.props.handleFocus) {
@@ -111,15 +115,15 @@ class TextInput extends React.Component {
         }
     }
 
-    handleChange(event) {        
-        if (this.mask) {            
-            let returnValue = this.mask.getInputText();
+    handleChange(event) {
+        if (this.mask) {
+            const returnValue = this.mask.getInputText();
             this.setState({
-                value: returnValue
+                value: returnValue,
             });
         } else {
             this.setState({
-                value: event.target.value
+                value: event.target.value,
             });
         }
     }
@@ -141,11 +145,9 @@ class TextInput extends React.Component {
                         name={this.props.name}
                         id={this.props.id}
                         placeholder={this.props.maskPlaceholder}
-                        value={this.mask && this.mask.getInputText().length > 0 ? this.mask.getDisplayText() : this.state.value}
-
+                        value={this.mask && this.mask.empty() ? '' : this.mask.getInputText()}
                         pattern={this.props.pattern}
                         readOnly={false}
-
                         onMouseOver={this.handleMouseOver}
                         onMouseOut={this.handleMouseOut}
                         onFocus={this.handleFocus}
